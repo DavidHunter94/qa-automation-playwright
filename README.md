@@ -81,7 +81,7 @@ pip install -r requirements.txt
 Ejecutar pruebas:
 
 ```text id="l6p2eq"
-py -m pytest main.py -v --headed
+py -m pytest -v --headed
 ```
 
 ---
