@@ -11,7 +11,7 @@ import data
 @pytest.fixture(scope="session")
 def browser_context():
     pw = sync_playwright().start()
-    browser = pw.chromium.launch(headless=False)
+    browser = pw.chromium.launch(headless=True)
     context = browser.new_context()
     yield context
     context.close()
