@@ -1,0 +1,43 @@
+name: QA Automation - Playwright Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Correr pruebas con Playwright
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código del repo
+        uses: actions/checkout@v4
+
+      - name: Instalar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Instalar dependencias del proyecto
+        run: pip install -r requirements.txt
+
+      - name: Instalar Playwright y navegadores
+        run: |
+          pip install pytest-playwright
+          playwright install chromium
+
+      - name: Correr los tests
+        run: pytest -v tests/
+
+      - name: Generar reporte HTML (siempre, aunque fallen tests)
+        if: always()
+        run: pytest -v tests/ --html=report.html --self-contained-html || true
+
+      - name: Subir reporte como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-pruebas
+          path: report.html
